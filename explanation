@@ -1,0 +1,50 @@
+
+Lets say you have 5 webservers, each running apache. Each apache process has a MaxClients setting of 12. This means that the maximum number of concurrent connections you may receive is 5 x 12 (60). Always leave a few extra slots open if you can, for administrative tasks, adding more webservers, crons/scripts/etc.
+
+
+- Improve performance
+- low application cost
+
+
+Connecting to servers
+
+const char *config_string= "--SERVER=host10.example.com --SERVER=host11.example.com --SERVER=host10.example.com"
+memcached_st *memc= memcached(config_string, strlen(config_string);
+{
+...
+}
+ memcached_free(memc);
+
+In the above code you create a memcached_st object with three server by making use of memcached_create().
+Creating a pool of servers
+
+Creating a pool of Servers:
+
+const char *config_string= "--SERVER=host10.example.com --SERVER=host11.example.com --SERVER=host10.example.com";
+
+memcached_pool_st* pool= memcached_pool(config_string, strlen(config_string));
+
+memcached_return_t rc;
+
+memcached_st *memc= memcached_pool_pop(pool, false, &rc);
+
+.... do work
+
+/*
+  Release the memc_ptr that was pulled from the pool
+*/
+memcached_pool_push(pool, memc);
+
+/*
+  Destroy the pool.
+*/
+memcached_pool_destroy(pool);
+
+######################################
+Mark Zukemberg talking about memcache#
+######################################
+
+Gather-scatter - vector addressing
+https://en.wikipedia.org/wiki/Gather-scatter_%28vector_addressing%29
+
+Highligths - costs reducing if use gather-scatter
