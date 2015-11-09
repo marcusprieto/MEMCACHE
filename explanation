@@ -41,7 +41,7 @@ memcached_pool_push(pool, memc);
 memcached_pool_destroy(pool);
 
 ######################################
-Mark Zukemberg talking about memcache#
+Mark Zukemberg talk about memcache#
 ######################################
 
 Gather-scatter - vector addressing
